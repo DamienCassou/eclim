@@ -2,6 +2,7 @@
 <classpath>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+  <classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
   <classpathentry kind="lib" path="lib/junit-4.1.jar"/>
   <classpathentry kind="lib" path="lib/testng-5.1-jdk15.jar"/>
   <classpathentry kind="lib" path="src/eclipse/plugins/org.eclim/lib/commons-cli-1.1.jar"/>
@@ -76,6 +77,9 @@
   <classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.wst.sse.core_1.1.600.v201105162116.jar"/>
   <classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.wst.sse.ui_1.3.0.v201105101529.jar"/>
   <classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.xsd_2.7.0.v20110606-0949.jar"/>
+  <classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.scala-ide.scala.library_2.10.0.r25336-b20110722020613.jar"/>
+  <classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.scala-ide.sdt.aspects_2.0.0.nightly-210-201107220048-65854ae.jar"/>
+  <classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.scala-ide.sdt.core_2.0.0.nightly-210-201107220048-65854ae.jar"/>
   <classpathentry kind="var" path="FORMIC_HOME/lib/ant-1.8.1.jar"/>
   <classpathentry kind="var" path="FORMIC_HOME/lib/foxtrot-3.0.beta1.jar"/>
   <classpathentry kind="var" path="FORMIC_HOME/lib/looks-2.1.4.jar"/>

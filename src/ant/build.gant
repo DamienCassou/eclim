@@ -41,25 +41,6 @@ if (eclipseHome == '' || eclipseHome == '${env.ECLIM_ECLIPSE_HOME}'){
   ant.fail(message: 'missing required property (see above)')
 }
 
-ant.path(id: 'classpath'){
-  fileset(dir: 'lib', includes: '**/*.jar')
-  fileset(dir: 'src/eclipse/plugins/', includes: '*/lib/*.jar')
-  fileset(dir: '${eclipse.home}'){
-    include(name: 'startup.jar')
-    include(name: 'dropins/**/plugins/org.eclipse.*.jar')
-    include(name: 'plugins/org.eclipse.*.jar')
-    include(name: 'plugins/com.ibm.*.jar')
-  }
-  dirset(dir: '${eclipse.home}'){
-    include(name: 'dropins/**/plugins/org.eclipse.*')
-    include(name: 'plugins/org.eclipse.*')
-  }
-  // for gentoo
-  fileset(dir: '/usr/share/', erroronmissingdir: false){
-    include(name: 'swt-*/lib/*.jar')
-  }
-}
-
 target(name: 'init'){
   File dotversion = new File("${basedir}/.version")
   if (dotversion.exists()){ // only used by source distribution (tar.gz)
@@ -84,6 +65,41 @@ target(name: 'init'){
       Os.isFamily(Os.FAMILY_WINDOWS) ?
       '${user.home}/vimfiles' : '${user.home}/.vim'
     ))
+  }
+
+  // extract scala jars for scala support
+  ant.unjar(dest: 'build/temp/lib/scala'){
+    fileset(dir: '${eclipse.home}'){
+      include(name: 'dropins/**/plugins/org.scala-ide.scala.*.jar')
+      include(name: 'plugins/org.scala-ide.scala.*.jar')
+    }
+  }
+
+  ant.path(id: 'classpath'){
+    fileset(dir: 'lib', includes: '**/*.jar')
+    fileset(dir: 'src/eclipse/plugins/', includes: '*/lib/*.jar')
+    fileset(dir: '${eclipse.home}'){
+      include(name: 'startup.jar')
+      include(name: 'dropins/**/plugins/org.eclipse.*.jar')
+      include(name: 'plugins/org.eclipse.*.jar')
+      include(name: 'plugins/com.ibm.*.jar')
+    }
+    dirset(dir: '${eclipse.home}'){
+      include(name: 'dropins/**/plugins/org.eclipse.*')
+      include(name: 'plugins/org.eclipse.*')
+    }
+    // for gentoo
+    fileset(dir: '/usr/share/', erroronmissingdir: false){
+      include(name: 'swt-*/lib/*.jar')
+    }
+    // for scala
+    fileset(dir: '${eclipse.home}'){
+      include(name: 'dropins/**/plugins/org.scala-ide.*.jar')
+      include(name: 'plugins/org.scala-ide.*.jar')
+    }
+    fileset(dir: 'build/temp/lib', erroronmissingdir: false){
+      include(name: '**/scala-*.jar')
+    }
   }
 }
 

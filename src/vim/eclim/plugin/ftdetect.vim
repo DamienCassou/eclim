@@ -5,7 +5,7 @@
 "
 " License:
 "
-" Copyright (C) 2005 - 2010  Eric Van Dewoestine
+" Copyright (C) 2005 - 2011  Eric Van Dewoestine
 "
 " This program is free software: you can redistribute it and/or modify
 " it under the terms of the GNU General Public License as published by
@@ -57,6 +57,7 @@ autocmd BufRead *.xml call <SID>SetXmlFileType(xmltypes)
 
 autocmd BufRead *.gant set ft=gant
 autocmd BufRead *.gst set ft=groovy_simple_template
+autocmd BufRead,BufNewFile *.scala set filetype=scala
 
 " SetXmlFileType(map) {{{
 " Sets the filetype of the current xml file to the if its root element is in the
