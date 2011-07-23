@@ -43,11 +43,21 @@ public class ScalaUtils
   {
     ScalaSourceFile src = (ScalaSourceFile)
       JavaUtils.getCompilationUnit(project, file);
+    refreshSourceFile(src);
+    return src;
+  }
+
+  public static void refreshSourceFile(ScalaSourceFile src)
+    throws Exception
+  {
+    if (src == null){
+      return;
+    }
+
     // without writing scala code, this is the easiest way to force the source
     // file to be run through the scala compiler.
     // TODO: implement this in scala to permit a more direct parsing of the file.
     src.bufferChanged(new BufferChangedEvent(
           src.getBuffer(), 1, 0, StringUtils.EMPTY));
-    return src;
   }
 }

@@ -16,18 +16,31 @@
  */
 package org.eclim.plugin.sdt.project;
 
+import org.eclim.command.CommandLine;
+
 import org.eclim.plugin.core.project.ProjectManager;
 
 import org.eclim.plugin.jdt.project.JavaProjectManager;
 
 import org.eclim.plugin.sdt.PluginResources;
 
+import org.eclim.plugin.sdt.util.ScalaUtils;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
+import org.eclipse.jdt.core.JavaCore;
+
+import scala.collection.Iterator;
+
 import scala.tools.eclipse.Nature;
+import scala.tools.eclipse.ScalaPlugin;
+import scala.tools.eclipse.ScalaProject;
+
+import scala.tools.eclipse.javaelements.ScalaSourceFile;
 
 /**
  * {@link ProjectManager} for scala projects.
@@ -37,7 +50,6 @@ import scala.tools.eclipse.Nature;
 public class ScalaProjectManager
   extends JavaProjectManager
 {
-
   /**
    * {@inheritDoc}
    * @see JavaProjectManager#create(IProject,String)
@@ -59,5 +71,24 @@ public class ScalaProjectManager
     Nature nature = new Nature();
     nature.setProject(project);
     nature.configure();
+  }
+
+  /**
+   * {@inheritDoc}
+   * @see JavaProjectManager#refresh(IProject,CommandLine)
+   */
+  @Override
+  public void refresh(IProject project, CommandLine commandLine)
+    throws Exception
+  {
+    super.refresh(project, commandLine);
+
+    // is there an easier way to force re-parsing of all files?
+    ScalaProject sproject = ScalaPlugin.plugin().getScalaProject(project);
+    Iterator<IFile> iterator = sproject.allSourceFiles().iterator();
+    while(iterator.hasNext()){
+      ScalaUtils.refreshSourceFile((ScalaSourceFile)
+          JavaCore.createCompilationUnitFrom(iterator.next()));
+    }
   }
 }
