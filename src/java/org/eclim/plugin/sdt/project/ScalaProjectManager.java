@@ -22,8 +22,14 @@ import org.eclim.plugin.jdt.project.JavaProjectManager;
 
 import org.eclim.plugin.sdt.PluginResources;
 
+import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+
+import org.eclipse.core.runtime.NullProgressMonitor;
+
+import scala.tools.eclipse.Nature;
+import scala.tools.eclipse.ScalaPlugin;
 
 /**
  * {@link ProjectManager} for scala projects.
@@ -45,12 +51,22 @@ public class ScalaProjectManager
     super.create(project, depends);
 
     IProjectDescription desc = project.getDescription();
-    if(!desc.hasNature(PluginResources.NATURE)){
-      String[] natures = desc.getNatureIds();
-      String[] newNatures = new String[natures.length + 1];
-      System.arraycopy(natures, 0, newNatures, 0, natures.length);
-      newNatures[natures.length] = PluginResources.NATURE;
-      project.getDescription().setNatureIds(natures);
-    }
+    String[] natures = desc.getNatureIds();
+    String[] newNatures = new String[natures.length + 1];
+    System.arraycopy(natures, 0, newNatures, 0, natures.length);
+    newNatures[natures.length] = PluginResources.NATURE;
+    desc.setNatureIds(newNatures);
+
+    ICommand[] builders = desc.getBuildSpec();
+    ICommand[] newBuilders = new ICommand[builders.length + 1];
+    System.arraycopy(builders, 0, newBuilders, 0, builders.length);
+    newBuilders[builders.length] = desc.newCommand();
+    newBuilders[builders.length].setBuilderName(
+        ScalaPlugin.plugin().builderId());
+    desc.setBuildSpec(newBuilders);
+
+    project.setDescription(desc, new NullProgressMonitor());
+
+    Nature.addScalaLibAndSave(project);
   }
 }
